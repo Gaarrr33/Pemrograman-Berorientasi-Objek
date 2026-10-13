@@ -1,0 +1,151 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam classAttributeIconSize 0
+skinparam classBorderColor #000000
+skinparam arrowColor #000000
+skinparam backgroundColor #FFFFFF
+
+title Class Diagram - Sistem Klinik Sehat Medika (UTS Praktikum PBO Tipe B)
+
+interface PelayananMedis <<interface>> {
+    + {abstract} beriPelayanan(pasien: Pasien, keluhan: String): void
+    + {abstract} getPeran(): String
+}
+
+abstract class TenagaMedis <<abstract>> {
+    - idTenagaMedis: String
+    - nama: String
+    - spesialisasi: String
+    + TenagaMedis(idTenagaMedis: String, nama: String, spesialisasi: String)
+    + getIdTenagaMedis(): String
+    + setIdTenagaMedis(idTenagaMedis: String): void
+    + getNama(): String
+    + setNama(nama: String): void
+    + getSpesialisasi(): String
+    + setSpesialisasi(spesialisasi: String): void
+    + {abstract} beriPelayanan(pasien: Pasien, keluhan: String): void
+    + tampilkanProfil(): void
+    + toString(): String
+}
+
+class Dokter {
+    - nomorSip: String
+    - biayaKonsultasi: double
+    + Dokter(idTenagaMedis: String, nama: String, spesialisasi: String, nomorSip: String, biayaKonsultasi: double)
+    + getNomorSip(): String
+    + setNomorSip(nomorSip: String): void
+    + getBiayaKonsultasi(): double
+    + setBiayaKonsultasi(biayaKonsultasi: double): void
+    + getPeran(): String
+    + beriPelayanan(pasien: Pasien, keluhan: String): void
+}
+
+class Perawat {
+    - shiftKerja: String
+    - ruangTugas: String
+    + Perawat(idTenagaMedis: String, nama: String, spesialisasi: String, shiftKerja: String, ruangTugas: String)
+    + getShiftKerja(): String
+    + setShiftKerja(shiftKerja: String): void
+    + getRuangTugas(): String
+    + setRuangTugas(ruangTugas: String): void
+    + getPeran(): String
+    + beriPelayanan(pasien: Pasien, keluhan: String): void
+}
+
+class Pasien {
+    - idPasien: String
+    - nama: String
+    - usia: int
+    - jenisKelamin: String
+    - alamat: String
+    + Pasien(idPasien: String, nama: String, usia: int, jenisKelamin: String, alamat: String)
+    + getIdPasien(): String
+    + setIdPasien(idPasien: String): void
+    + getNama(): String
+    + setNama(nama: String): void
+    + getUsia(): int
+    + setUsia(usia: int): void
+    + getJenisKelamin(): String
+    + setJenisKelamin(jenisKelamin: String): void
+    + getAlamat(): String
+    + setAlamat(alamat: String): void
+    + tampilkanInfo(): void
+    + toString(): String
+}
+
+class Kunjungan {
+    - idKunjungan: String
+    - nomorAntrean: int
+    - keluhan: String
+    - prioritas: int
+    - status: String
+    + Kunjungan(idKunjungan: String, nomorAntrean: int, pasien: Pasien, tenagaMedis: TenagaMedis, keluhan: String, prioritas: int)
+    + getIdKunjungan(): String
+    + getNomorAntrean(): int
+    + getPasien(): Pasien
+    + setPasien(pasien: Pasien): void
+    + getTenagaMedis(): TenagaMedis
+    + setTenagaMedis(tenagaMedis: TenagaMedis): void
+    + getKeluhan(): String
+    + setKeluhan(keluhan: String): void
+    + getPrioritas(): int
+    + setPrioritas(prioritas: int): void
+    + getStatus(): String
+    + setStatus(status: String): void
+    + getTeksPrioritas(): String
+    + prosesPelayanan(): void
+    + compareTo(other: Kunjungan): int
+    + tampilkanBarisTabel(): void
+}
+
+class Klinik {
+    - namaKlinik: String
+    - alamat: String
+    - counterAntrean: int
+    - counterKunjungan: int
+    + Klinik(namaKlinik: String, alamat: String)
+    + getNamaKlinik(): String
+    + getAlamat(): String
+    + tambahPasien(pasien: Pasien): void
+    + cariPasien(idPasien: String): Pasien
+    + tambahTenagaMedis(tenagaMedis: TenagaMedis): void
+    + cariTenagaMedis(idTenagaMedis: String): TenagaMedis
+    + daftarkanKunjungan(idPasien: String, idTenagaMedis: String, keluhan: String, prioritas: int): Kunjungan
+    + getAntreanMenungguTerurut(): List<Kunjungan>
+    + prosesAntreanTerdepan(): Kunjungan
+    + cariKunjungan(idKunjungan: String): Kunjungan
+    + inisialisasiDataAwal(): void
+    + tampilkanDaftarPasien(): void
+    + tampilkanDaftarTenagaMedis(): void
+    + tampilkanAntreanPrioritas(): void
+    + tampilkanSemuaKunjungan(): void
+}
+
+class Main {
+    + {static} main(args: String[]): void
+    - {static} tampilkanMenuUtama(): void
+    - {static} menuTambahPasien(scanner: Scanner, klinik: Klinik): void
+    - {static} menuDaftarkanKunjungan(scanner: Scanner, klinik: Klinik): void
+    - {static} menuProsesPelayanan(scanner: Scanner, klinik: Klinik): void
+    + {static} jalankanSkenarioPengujian(klinik: Klinik): void
+    - {static} bacaInteger(scanner: Scanner, prompt: String): int
+}
+
+' Relasi
+PelayananMedis <|.. TenagaMedis : implements
+
+TenagaMedis <|-- Dokter : extends
+TenagaMedis <|-- Perawat : extends
+
+Klinik "1" o-- "0..*" Pasien : mengelola
+Klinik "1" o-- "0..*" TenagaMedis : memiliki
+Klinik "1" o-- "0..*" Kunjungan : mengelola
+
+Kunjungan "0..*" --> "1" Pasien : pasien
+Kunjungan "0..*" --> "1" TenagaMedis : tenagaMedis
+
+Main ..> Klinik : uses
+
+@enduml

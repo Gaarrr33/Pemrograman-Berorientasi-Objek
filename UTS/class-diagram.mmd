@@ -1,0 +1,142 @@
+classDiagram
+    direction TB
+
+    class PelayananMedis {
+        <<interface>>
+        +beriPelayanan(pasien: Pasien, keluhan: String) void*
+        +getPeran() String*
+    }
+
+    class TenagaMedis {
+        <<abstract>>
+        -idTenagaMedis: String
+        -nama: String
+        -spesialisasi: String
+        +TenagaMedis(idTenagaMedis, nama, spesialisasi)
+        +getIdTenagaMedis() String
+        +setIdTenagaMedis(id: String) void
+        +getNama() String
+        +setNama(nama: String) void
+        +getSpesialisasi() String
+        +setSpesialisasi(spesialisasi: String) void
+        +beriPelayanan(pasien: Pasien, keluhan: String) void*
+        +tampilkanProfil() void
+        +toString() String
+    }
+
+    class Dokter {
+        -nomorSip: String
+        -biayaKonsultasi: double
+        +Dokter(id, nama, spesialisasi, nomorSip, biaya)
+        +getNomorSip() String
+        +setNomorSip(nomorSip: String) void
+        +getBiayaKonsultasi() double
+        +setBiayaKonsultasi(biaya: double) void
+        +getPeran() String
+        +beriPelayanan(pasien: Pasien, keluhan: String) void
+    }
+
+    class Perawat {
+        -shiftKerja: String
+        -ruangTugas: String
+        +Perawat(id, nama, spesialisasi, shift, ruang)
+        +getShiftKerja() String
+        +setShiftKerja(shift: String) void
+        +getRuangTugas() String
+        +setRuangTugas(ruang: String) void
+        +getPeran() String
+        +beriPelayanan(pasien: Pasien, keluhan: String) void
+    }
+
+    class Pasien {
+        -idPasien: String
+        -nama: String
+        -usia: int
+        -jenisKelamin: String
+        -alamat: String
+        +Pasien(id, nama, usia, jk, alamat)
+        +getIdPasien() String
+        +setIdPasien(id: String) void
+        +getNama() String
+        +setNama(nama: String) void
+        +getUsia() int
+        +setUsia(usia: int) void
+        +getJenisKelamin() String
+        +setJenisKelamin(jk: String) void
+        +getAlamat() String
+        +setAlamat(alamat: String) void
+        +tampilkanInfo() void
+        +toString() String
+    }
+
+    class Kunjungan {
+        <<Comparable~Kunjungan~>>
+        -idKunjungan: String
+        -nomorAntrean: int
+        -keluhan: String
+        -prioritas: int
+        -status: String
+        +Kunjungan(id, noAntre, pasien, tm, keluhan, prioritas)
+        +getIdKunjungan() String
+        +getNomorAntrean() int
+        +getPasien() Pasien
+        +setPasien(p: Pasien) void
+        +getTenagaMedis() TenagaMedis
+        +setTenagaMedis(tm: TenagaMedis) void
+        +getKeluhan() String
+        +setKeluhan(k: String) void
+        +getPrioritas() int
+        +setPrioritas(p: int) void
+        +getStatus() String
+        +setStatus(s: String) void
+        +getTeksPrioritas() String
+        +prosesPelayanan() void
+        +compareTo(other: Kunjungan) int
+        +tampilkanBarisTabel() void
+    }
+
+    class Klinik {
+        -namaKlinik: String
+        -alamat: String
+        -counterAntrean: int
+        -counterKunjungan: int
+        +Klinik(nama, alamat)
+        +getNamaKlinik() String
+        +getAlamat() String
+        +tambahPasien(p: Pasien) void
+        +cariPasien(id: String) Pasien
+        +tambahTenagaMedis(tm: TenagaMedis) void
+        +cariTenagaMedis(id: String) TenagaMedis
+        +daftarkanKunjungan(idPasien, idTM, keluhan, prioritas) Kunjungan
+        +getAntreanMenungguTerurut() List~Kunjungan~
+        +prosesAntreanTerdepan() Kunjungan
+        +cariKunjungan(id: String) Kunjungan
+        +inisialisasiDataAwal() void
+        +tampilkanDaftarPasien() void
+        +tampilkanDaftarTenagaMedis() void
+        +tampilkanAntreanPrioritas() void
+        +tampilkanSemuaKunjungan() void
+    }
+
+    class Main {
+        +main(args: String[]) void$
+        -tampilkanMenuUtama() void$
+        -menuTambahPasien(scanner, klinik) void$
+        -menuDaftarkanKunjungan(scanner, klinik) void$
+        -menuProsesPelayanan(scanner, klinik) void$
+        +jalankanSkenarioPengujian(klinik) void$
+        -bacaInteger(scanner, prompt) int$
+    }
+
+    PelayananMedis <|.. TenagaMedis : implements
+    TenagaMedis <|-- Dokter : extends
+    TenagaMedis <|-- Perawat : extends
+
+    Klinik "1" o-- "0..*" Pasien : mengelola
+    Klinik "1" o-- "0..*" TenagaMedis : memiliki
+    Klinik "1" o-- "0..*" Kunjungan : mengelola
+
+    Kunjungan "0..*" --> "1" Pasien : pasien
+    Kunjungan "0..*" --> "1" TenagaMedis : tenagaMedis
+
+    Main ..> Klinik : uses
