@@ -1,0 +1,87 @@
+HASIL PENGUJIAN PROGRAM JAVA PBO MODUL 9
+PROJECT: TEGAR COPYFLOW — PENCATATAN BARANG TOKO & FOTOKOPI
+LINGKUNGAN: Java(TM) SE Runtime Environment (build 25+37-LTS-3491)
+TANGGAL PENGUJIAN: 2026-10-26 19:54:45 WIB
+STATUS: SUKSES (Exit Code: 0, 0 Error, 0 Warning)
+
+==========================================================================================
+               PRAKTIKUM PEMROGRAMAN BERORIENTASI OBJEK — MODUL 9                         
+                    SISTEM TEGAR COPYFLOW (TOKO & FOTOKOPI)                               
+==========================================================================================
+
+>>> [TAHAP 1] INISIALISASI MASTER DATA PRODUK & LAYANAN JASA
+Berhasil mendaftarkan 4 master produk & layanan:
+ 1. [Kertas HVS A4 75gr PaperOne (ID:1) | Kat: Kertas | Stok: 0 rim [HABIS] | Nilai: Rp 0 | Harga: Rp 55.000]
+ 2. [Pulpen Standard AE7 Hitam (ID:2) | Kat: Alat Tulis | Stok: 0 pcs [HABIS] | Nilai: Rp 0 | Harga: Rp 3.500]
+ 3. [Jasa Fotokopi Bolak-Balik (ID:3) | Tipe: SERVICE | Satuan: lbr | HPP: Rp 150 | Harga: Rp 350]
+ 4. [Jasa Jilid Lakban Mika (ID:4) | Tipe: SERVICE | Satuan: buku | HPP: Rp 1.500 | Harga: Rp 5.000]
+
+>>> [TAHAP 2] PENCATATAN BATCH STOK MASUK (SIMULASI FIFO)
+Riwayat Batch Masuk untuk Kertas HVS A4 75gr PaperOne:
+  * [Batch #101 | Masuk: 2026-10-01 | Sisa: 10/10 unit | Beli: Rp 45.000 | Ket: Stok Awal Bulan]
+  * [Batch #102 | Masuk: 2026-10-15 | Sisa: 15/15 unit | Beli: Rp 48.000 | Ket: Restock Kulakan Supplier A]
+  Total Stok Tersedia : 25 rim | Nilai Inventaris: Rp 1.170.000 | Status: AMAN
+
+Riwayat Batch Masuk untuk Pulpen Standard AE7 Hitam:
+  * [Batch #103 | Masuk: 2026-10-10 | Sisa: 40/40 unit | Beli: Rp 2.200 | Ket: Kulakan Grosir ATK]
+  Total Stok Tersedia : 40 pcs | Nilai Inventaris: Rp 88.000 | Status: AMAN
+
+>>> [TAHAP 3] MEMBUAT TRANSAKSI PENJUALAN KASIR (TRX-20261026-0001)
+==========================================================================================
+                        TEGAR COPYFLOW — STRUK PENJUALAN                                  
+                Jl. Raya Fotokopi & ATK No. 10 | Telp: (0328) 667890                     
+==========================================================================================
+ No. Invoice  : TRX-20261026-0001         Tanggal : 2026-10-26 09:15:00
+ Pembayaran   : Cash                      Status  : COMPLETED
+ Catatan      : Pesanan Kantor Desa
+------------------------------------------------------------------------------------------
+ Nama Produk / Jasa        | Qty        | Harga Satuan | Subtotal       | Laba Kotor    
+------------------------------------------------------------------------------------------
+ Kertas HVS A4 75gr PaperOne |  12 rim    | Rp    55.000 | Rp     660.000 | Rp     114.000
+ Pulpen Standard AE7 Hitam |   5 pcs    | Rp     3.500 | Rp      17.500 | Rp       6.500
+ Jasa Fotokopi Bolak-Balik | 100 lbr    | Rp       350 | Rp      35.000 | Rp      20.000
+ Jasa Jilid Lakban Mika    |   2 buku   | Rp     5.000 | Rp      10.000 | Rp       7.000
+------------------------------------------------------------------------------------------
+ TOTAL PENJUALAN : Rp        722.500
+ TOTAL HPP (COGS): Rp        575.000
+ LABA KOTOR      : Rp        147.500 (Margin: 20.4%)
+==========================================================================================
+
+Kondisi Batch Stok Kertas HVS A4 75gr PaperOne setelah penjualan 12 rim:
+  * [Batch #101 | Masuk: 2026-10-01 | Sisa: 0/10 unit | Beli: Rp 45.000 | Ket: Stok Awal Bulan]
+  * [Batch #102 | Masuk: 2026-10-15 | Sisa: 13/15 unit | Beli: Rp 48.000 | Ket: Restock Kulakan Supplier A]
+Sisa Stok Fisik HVS: 13 rim (Nilai Aset: Rp 624.000)
+
+>>> [TAHAP 4] SIMULASI TRANSAKSI #2 & PEMBATALAN (CANCEL / ROLLBACK)
+Stok HVS sebelum transaksi 2: 13 rim
+Stok HVS sesudah ditambah ke transaksi 2 (8 rim): 5 rim
+Status Transaksi 2: COMPLETED | Total Tagihan: Rp 440.000
+--> Pelanggan membatalkan transaksi karena dompet tertinggal.
+Status Transaksi 2 sekarang: CANCELLED
+Stok HVS setelah pembatalan (kembali utuh): 13 rim
+
+>>> [TAHAP 5] PENGUJIAN VALIDASI STATE & DEFENSIVE PROGRAMMING
+[Uji 1] Meminta stok melebihi ketersediaan (Stok sisa: 13, minta: 25 rim)... BERHASIL DICEGAH!
+  Pesan Sistem: "Stok 'Kertas HVS A4 75gr PaperOne' tidak mencukupi! Tersedia: 13 rim, Diminta: 25 rim."
+[Uji 2] Input kuantitas bernilai 0 atau negatif (-3)... BERHASIL DICEGAH!
+  Pesan Sistem: "Jumlah item harus lebih dari 0."
+[Uji 3] Mencoba input batch fisik pada produk jasa Fotokopi... BERHASIL DICEGAH!
+  Pesan Sistem: "Layanan jasa (SERVICE) tidak memerlukan batch persediaan fisik."
+[Uji 4] Mengubah harga jual menjadi negatif (-10000)... BERHASIL DICEGAH!
+  Pesan Sistem: "Harga jual baru tidak boleh negatif."
+[Uji 5] Menambah item baru ke Transaksi 2 yang sudah CANCELLED... BERHASIL DICEGAH!
+  Pesan Sistem: "Tidak dapat menambahkan item ke transaksi yang sudah berstatus: CANCELLED"
+
+>>> [TAHAP 6] REKAPITULASI STATUS AKHIR INVENTARIS TEGAR COPYFLOW
+------------------------------------------------------------------------------------------
+ ID   | Nama Produk / Layanan            | Tipe       | Stok Sisa    | Status     | Nilai Inventaris
+------------------------------------------------------------------------------------------
+ 1    | Kertas HVS A4 75gr PaperOne      | PRODUCT    | 13 rim       | AMAN       | Rp       624.000
+ 2    | Pulpen Standard AE7 Hitam        | PRODUCT    | 35 pcs       | AMAN       | Rp        77.000
+ 3    | Jasa Fotokopi Bolak-Balik        | SERVICE    | -            | SERVICE    | Rp             0
+ 4    | Jasa Jilid Lakban Mika           | SERVICE    | -            | SERVICE    | Rp             0
+------------------------------------------------------------------------------------------
+ TOTAL NILAI PERSSEDIAAN TOKO : Rp 701.000
+==========================================================================================
+                 PENGUJIAN PROGRAM JAVA PBO MODUL 9 SELESAI DENGAN SUKSES!                
+==========================================================================================
