@@ -1,0 +1,5 @@
+PRD-001|1|Kertas HVS A4 75gr PaperOne|Kertas|PRODUCT|rim|55000.00|5|0.00|true
+PRD-002|2|Pulpen Standard AE7 Hitam|Alat Tulis|PRODUCT|pcs|3500.00|15|0.00|true
+PRD-003|3|Spidol Snowman Boardmarker|Alat Tulis|PRODUCT|pcs|9000.00|5|0.00|true
+SRV-001|4|Jasa Fotokopi Bolak-Balik|Fotokopi|SERVICE|lbr|350.00|0|150.00|true
+SRV-002|5|Jasa Jilid Lakban Mika|Jilid|SERVICE|buku|5000.00|0|1500.00|true
