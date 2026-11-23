@@ -1,0 +1,2 @@
+PRD-001|101|Kertas HVS A4 70gsm|Kertas|PRODUCT|rim|55000.00|5|20.00|true
+PRD-002|102|Bolpoin Standard AE7|Alat Tulis|PRODUCT|pcs|2500.00|20|120.00|true
